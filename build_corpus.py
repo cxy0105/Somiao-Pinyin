@@ -47,7 +47,7 @@ def clean(text):
 
 def build_corpus():
     with codecs.open("data/zh.tsv", 'w', 'utf-8') as fout:
-        with codecs.open("data/zho_news_2007-2009_1M-sentences.txt", 'r', 'utf-8') as fin:
+        with codecs.open("data/format.txt", 'r', 'utf-8') as fin:
             i = 1
             while 1:
                 line = fin.readline()
