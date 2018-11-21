@@ -1,4 +1,3 @@
-
 '''
 Training.
 '''
@@ -83,7 +82,8 @@ class Graph():
 
 
 def train():
-    g = Graph(); print("Training Graph loaded")
+    g = Graph()
+    print("Training Graph loaded")
 
     with g.graph.as_default():
         # Training
@@ -101,4 +101,5 @@ def train():
 
 
 if __name__ == '__main__':
-    train(); print("Done")
+    train()
+    print("Done")

@@ -1,4 +1,3 @@
-
 from __future__ import print_function
 import tensorflow as tf
 from hyperparams import Hyperparams as hp
@@ -30,7 +29,6 @@ def embed(inputs, vocab_size, num_units, zero_pad=True, scope="embedding", reuse
         if zero_pad:
             lookup_table = tf.concat((tf.zeros(shape=[1, num_units]),
                                       lookup_table[1:, :]), 0)
-
 
     return tf.nn.embedding_lookup(lookup_table, inputs)
 
@@ -123,19 +121,18 @@ def normalize(inputs,
     if activation_fn:
         outputs = activation_fn(outputs)
 
-
     return outputs
 
 
 def conv1d(inputs,
-       filters=None,
-       size=1,
-       rate=1,
-       padding="SAME",
-       use_bias=False,
-       activation_fn=None,
-       scope="conv1d",
-       reuse=None):
+           filters=None,
+           size=1,
+           rate=1,
+           padding="SAME",
+           use_bias=False,
+           activation_fn=None,
+           scope="conv1d",
+           reuse=None):
     '''
     Args:
       inputs: A 3-D tensor with shape of [batch, time, depth].
@@ -226,7 +223,6 @@ def gru(inputs, num_units=None, bidirection=False, seqlen=None, scope="gru", reu
                                            sequence_length=seqlen,
                                            dtype=tf.float32)
 
-
     return outputs
 
 
@@ -275,6 +271,5 @@ def highwaynet(inputs, num_units=None, scope="highwaynet", reuse=None):
                             bias_initializer=tf.constant_initializer(-1.0), name="dense2")
         C = 1. - T
         outputs = H * T + inputs * C
-
 
     return outputs

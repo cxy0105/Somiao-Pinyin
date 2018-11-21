@@ -1,4 +1,3 @@
-
 '''
 Preprocessing.
 Note:
@@ -12,8 +11,9 @@ POQRS  TUV   WXYZ
 from __future__ import print_function
 from hyperparams import Hyperparams as hp
 import codecs
-#import pickle
+# import pickle
 import json
+
 
 def build_vocab():
     """Builds vocabulary from the corpus.
@@ -24,32 +24,35 @@ def build_vocab():
 
     # pinyin
     if hp.isqwerty:
-        pnyns = "EUabcdefghijklmnopqrstuvwxyz0123456789。，！？" #E: Empty, U: Unknown
-        pnyn2idx = {pnyn:idx for idx, pnyn in enumerate(pnyns)}
-        idx2pnyn = {idx:pnyn for idx, pnyn in enumerate(pnyns)}
+        pnyns = "EUabcdefghijklmnopqrstuvwxyz0123456789。，！？"  # E: Empty, U: Unknown
+        pnyn2idx = {pnyn: idx for idx, pnyn in enumerate(pnyns)}
+        idx2pnyn = {idx: pnyn for idx, pnyn in enumerate(pnyns)}
     else:
         pnyn2idx, idx2pnyn = dict(), dict()
-        pnyns_list = ["E", "U", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz", 
-                      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", u"。", u"，", u"！", u"？"] #E: Empty, U: Unknown
+        pnyns_list = ["E", "U", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz",
+                      "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", u"。", u"，", u"！", u"？"]  # E: Empty, U: Unknown
         for i, pnyns in enumerate(pnyns_list):
             for pnyn in pnyns:
                 pnyn2idx[pnyn] = i
-    
+
     # hanzis
     hanzi_sents = [line.split('\t')[2] for line in codecs.open('data/zh.tsv', 'r', 'utf-8').read().splitlines()]
     hanzi2cnt = Counter(chain.from_iterable(hanzi_sents))
-    hanzis = [hanzi for hanzi, cnt in hanzi2cnt.items() if cnt > 5] # remove long-tail characters
-    
+    hanzis = [hanzi for hanzi, cnt in hanzi2cnt.items() if cnt > 5]  # remove long-tail characters
+
     hanzis.remove("_")
-    hanzis = ["E", "U", "_" ] + hanzis # 0: empty, 1: unknown, 2: blank
-    hanzi2idx = {hanzi:idx for idx, hanzi in enumerate(hanzis)}
-    idx2hanzi = {idx:hanzi for idx, hanzi in enumerate(hanzis)}
-    
+    hanzis = ["E", "U", "_"] + hanzis  # 0: empty, 1: unknown, 2: blank
+    hanzi2idx = {hanzi: idx for idx, hanzi in enumerate(hanzis)}
+    idx2hanzi = {idx: hanzi for idx, hanzi in enumerate(hanzis)}
+
     if hp.isqwerty:
-        #pickle.dump((pnyn2idx, idx2pnyn, hanzi2idx, idx2hanzi), open('data/vocab.qwerty.pkl', 'wb'), 0)
+        # pickle.dump((pnyn2idx, idx2pnyn, hanzi2idx, idx2hanzi), open('data/vocab.qwerty.pkl', 'wb'), 0)
         json.dump((pnyn2idx, idx2pnyn, hanzi2idx, idx2hanzi), open('data/vocab.qwerty.json', 'w'))
     else:
-        #pickle.dump((pnyn2idx, idx2pnyn, hanzi2idx, idx2hanzi), open('data/vocab.nine.pkl', 'wb'), 0)
+        # pickle.dump((pnyn2idx, idx2pnyn, hanzi2idx, idx2hanzi), open('data/vocab.nine.pkl', 'wb'), 0)
         json.dump((pnyn2idx, idx2pnyn, hanzi2idx, idx2hanzi), open('data/vocab.nine.json', 'w'))
+
+
 if __name__ == '__main__':
-    build_vocab(); print("Done" )
+    build_vocab();
+    print("Done")

@@ -1,4 +1,3 @@
-
 '''
 Data loading.
 Note:
@@ -15,12 +14,14 @@ import codecs
 import numpy as np
 import re
 
+
 def load_vocab():
     import pickle
     if hp.isqwerty:
         return pickle.load(open('data/vocab.qwerty.pkl', 'rb'))
     else:
         return pickle.load(open('data/vocab.nine.pkl', 'rb'))
+
 
 def load_vocab_json():
     import json
@@ -49,15 +50,16 @@ def load_train_data():
             hanzi_sents = re.sub(u"(?<=([。，！？]))", r"|", hanzi_sent).split("|")
             fout.write(pnyn_sent + "===" + "|".join(pnyn_sents) + "\n")
 
-            for pnyn_sent, hanzi_sent in zip(pnyn_sents+[pnyn_sent], hanzi_sents+[hanzi_sent]):
-                assert len(pnyn_sent)==len(hanzi_sent)
+            for pnyn_sent, hanzi_sent in zip(pnyn_sents + [pnyn_sent], hanzi_sents + [hanzi_sent]):
+                assert len(pnyn_sent) == len(hanzi_sent)
                 if hp.minlen < len(pnyn_sent) <= hp.maxlen:
-                    x = [pnyn2idx.get(pnyn, 1) for pnyn in pnyn_sent] # 1: OOV
-                    y = [hanzi2idx.get(hanzi, 1) for hanzi in hanzi_sent] # 1: OOV
+                    x = [pnyn2idx.get(pnyn, 1) for pnyn in pnyn_sent]  # 1: OOV
+                    y = [hanzi2idx.get(hanzi, 1) for hanzi in hanzi_sent]  # 1: OOV
 
                     xs.append(np.array(x, np.int32).tostring())
                     ys.append(np.array(y, np.int32).tostring())
     return xs, ys
+
 
 def load_test_data():
     '''Embeds and vectorize words in input corpus'''
@@ -68,7 +70,7 @@ def load_test_data():
 
     pnyn2idx, _, hanzi2idx, _ = load_vocab()
 
-    nums, xs, ys = [], [], [] # ys: ground truth (list of string)
+    nums, xs, ys = [], [], []  # ys: ground truth (list of string)
     for line in lines:
         num, pnyn_sent, y = line.split(",")
 
@@ -81,9 +83,10 @@ def load_test_data():
     X = np.array(xs, np.int32)
     return nums, X, ys
 
+
 def load_test_string(pnyn2idx, test_string):
     '''Embeds and vectorize words in user input string'''
-    pnyn_sent= test_string
+    pnyn_sent = test_string
     xs = []
     x = [pnyn2idx.get(pnyn, 1) for pnyn in pnyn_sent]
     x += [0] * (hp.maxlen - len(x))
