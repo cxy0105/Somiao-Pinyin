@@ -1,7 +1,7 @@
 import regex
 import string
 
-PUNCTUATION = "！？｡＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､、〃》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏."+string.punctuation
+PUNCTUATION = "＂＃＄％＆＇（）＊＋－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､、〃》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏."+string.punctuation
 
 
 def sentence_clean(text):
@@ -9,6 +9,10 @@ def sentence_clean(text):
     text = regex.sub("\s", "", text)
     text = regex.sub(u"[^ \p{Han}。，！？]", "", text)
     text = regex.sub('['+PUNCTUATION+']', "", text)
+    text = regex.sub("。.*", "。", text)
+    text = regex.sub("，.*", "，", text)
+    text = regex.sub("？.*", "？", text)
+    text = regex.sub("！.*", "！", text)
     return text
 
 
