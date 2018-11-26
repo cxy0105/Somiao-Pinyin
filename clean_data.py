@@ -13,6 +13,9 @@ def sentence_clean(text):
     text = regex.sub("，.*", "，", text)
     text = regex.sub("？.*", "？", text)
     text = regex.sub("！.*", "！", text)
+    text = regex.sub("嚒", "么", text)
+    text = regex.sub("艹", "草", text)
+    text = regex.sub("𥚃", "里", text)
     return text
 
 

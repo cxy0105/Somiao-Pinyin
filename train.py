@@ -61,7 +61,7 @@ class Graph():
 
             ## Readout
             self.outputs = tf.layers.dense(enc, len(hanzi2idx), use_bias=False)
-            self.preds = tf.to_int32(tf.arg_max(self.outputs, dimension=-1))
+            self.preds = tf.to_int32(tf.argmax(self.outputs, dimension=-1))
 
             if is_training:
                 self.loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.y, logits=self.outputs)
